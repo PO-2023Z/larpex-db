@@ -1,8 +1,8 @@
 CREATE TABLE Places
 (
     PlaceId      VARCHAR(50) PRIMARY KEY,
-    Address      VARCHAR(50),
-    Details      VARCHAR(50),
+    Address      VARCHAR(250),
+    Details      VARCHAR(1000),
     PricePerHour MONEY
 );
 CREATE TABLE Games
@@ -11,15 +11,15 @@ CREATE TABLE Games
     GameName      VARCHAR(50),
     MaximumPlayer INT,
     Difficulty    INT,
-    Description   VARCHAR(50),
-    Map           VARCHAR(50),
-    Scenario      VARCHAR(50)
+    Description   VARCHAR(1000),
+    Map           VARCHAR(1000),
+    Scenario      VARCHAR(1000)
 );
 CREATE TABLE GameRoles
 (
     GameRoleId      VARCHAR(50) PRIMARY KEY,
     RoleName        VARCHAR(50),
-    RoleDescription VARCHAR(50),
+    RoleDescription VARCHAR(1000),
     GameId          VARCHAR(50),
     FOREIGN KEY (GameId) REFERENCES Games (GameId)
 );
@@ -27,10 +27,10 @@ CREATE TABLE Items
 (
     ItemId          VARCHAR(50) PRIMARY KEY,
     ItemName        VARCHAR(50),
-    ItemDescription VARCHAR(50),
+    ItemDescription VARCHAR(250),
     Rarity          VARCHAR(50),
     Type            VARCHAR(50),
-    ItemIcon        VARCHAR(50),
+    ItemIcon        VARCHAR(150),
     GameId          VARCHAR(50),
     FOREIGN KEY (GameId) REFERENCES Games (GameId)
 );
@@ -41,7 +41,7 @@ CREATE TABLE Events
     EventName    VARCHAR(50),
     StartDate    TIME,
     PricePerUser MONEY,
-    Description  VARCHAR(50),
+    Description  VARCHAR(1000),
     Icon         VARCHAR(50),
     EventState   VARCHAR(50),
     EndDate      TIME,
@@ -56,7 +56,7 @@ CREATE TABLE Users
     UserId VARCHAR(50) PRIMARY KEY,
     Name   VARCHAR(50),
     Email  VARCHAR(50),
-    Avatar VARCHAR(50)
+    Avatar VARCHAR(150)
 );
 CREATE TABLE UsersCredential
 (
