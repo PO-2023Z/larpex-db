@@ -41,13 +41,17 @@ CREATE TABLE Events
     EventName    VARCHAR(50),
     StartDate    TIME,
     PricePerUser MONEY,
-    Description  VARCHAR(1000),
+    TechnicalDescription  VARCHAR(1000),
+    DescriptionForClients   VARCHAR(1000),
+    DescriptionForEmployees  VARCHAR(1000),
     Icon         VARCHAR(50),
     EventState   VARCHAR(50),
     EndDate      TIME,
     PaidFor      BOOLEAN,
     GameId       VARCHAR(50),
     PlaceId      VARCHAR(50),
+    EventPrice   MONEY,
+    OwnerEmail   VARCHAR(50),
     FOREIGN KEY (GameId) REFERENCES Games (GameId),
     FOREIGN KEY (PlaceId) REFERENCES Places (PlaceId)
 );
