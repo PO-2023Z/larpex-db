@@ -1,13 +1,13 @@
 CREATE TABLE Places
 (
-    PlaceId      VARCHAR(50) PRIMARY KEY,
+    PlaceId      UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     Address      VARCHAR(250),
     Details      VARCHAR(1000),
     PricePerHour MONEY
 );
 CREATE TABLE Games
 (
-    GameId        VARCHAR(50) PRIMARY KEY,
+    GameId        UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     GameName      VARCHAR(50),
     MaximumPlayer INT,
     Difficulty    INT,
@@ -17,27 +17,27 @@ CREATE TABLE Games
 );
 CREATE TABLE GameRoles
 (
-    GameRoleId      VARCHAR(50) PRIMARY KEY,
+    GameRoleId     UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     RoleName        VARCHAR(50),
     RoleDescription VARCHAR(1000),
-    GameId          VARCHAR(50),
+    GameId          UUID,
     FOREIGN KEY (GameId) REFERENCES Games (GameId)
 );
 CREATE TABLE Items
 (
-    ItemId          VARCHAR(50) PRIMARY KEY,
+    ItemId         UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     ItemName        VARCHAR(50),
     ItemDescription VARCHAR(250),
     Rarity          VARCHAR(50),
     Type            VARCHAR(50),
     ItemIcon        VARCHAR(150),
-    GameId          VARCHAR(50),
+    GameId          UUID,
     FOREIGN KEY (GameId) REFERENCES Games (GameId)
 );
 
 CREATE TABLE Events
 (
-    EventId      VARCHAR(50) PRIMARY KEY,
+    EventId      UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     EventName    VARCHAR(50),
     StartDate    TIMESTAMP WITHOUT TIME ZONE,
     PricePerUser MONEY,
@@ -48,8 +48,8 @@ CREATE TABLE Events
     EventState   VARCHAR(50),
     EndDate      TIMESTAMP WITHOUT TIME ZONE,
     PaidFor      BOOLEAN,
-    GameId       VARCHAR(50),
-    PlaceId      VARCHAR(50),
+    GameId       UUID,
+    PlaceId      UUID,
     EventPrice   MONEY,
     OwnerEmail   VARCHAR(50),
     FOREIGN KEY (GameId) REFERENCES Games (GameId),
@@ -57,24 +57,24 @@ CREATE TABLE Events
 );
 CREATE TABLE Users
 (
-    UserId VARCHAR(50) PRIMARY KEY,
+    UserId UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     Name   VARCHAR(50),
     Email  VARCHAR(50),
     Avatar VARCHAR(150)
 );
 CREATE TABLE UsersCredential
 (
-    UserCredentialId VARCHAR(50) PRIMARY KEY,
+    UserCredentialId UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     Password         VARCHAR(50),
-    UserId           VARCHAR(50),
+    UserId           UUID,
     FOREIGN KEY (UserId) REFERENCES Users (UserId)
 );
 CREATE TABLE Players
 (
-    PlayerId    VARCHAR(50) PRIMARY KEY,
-    GameRoleId  VARCHAR(50),
-    UserId      VARCHAR(50),
-    EventId     VARCHAR(50),
+    PlayerId    UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    GameRoleId  UUID,
+    UserId      UUID,
+    EventId     UUID,
     Nick        VARCHAR(50),
     Coordinates POINT,
     FOREIGN KEY (GameRoleId) REFERENCES GameRoles (GameRoleId),
@@ -84,23 +84,23 @@ CREATE TABLE Players
 
 CREATE TABLE Equipments
 (
-    EquipmentId VARCHAR(50) PRIMARY KEY,
+    EquipmentId UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     ItemState   VARCHAR(50),
-    ItemId      VARCHAR(50),
-    PlayerId    VARCHAR(50),
+    ItemId      UUID,
+    PlayerId    UUID,
     FOREIGN KEY (ItemId) REFERENCES Items (ItemId),
     FOREIGN KEY (PlayerId) REFERENCES Players (PlayerId)
 );
 
 CREATE TABLE Payments
 (
-    PaymentId     VARCHAR(50) PRIMARY KEY,
+    PaymentId     UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     PaymentType   VARCHAR(50),
     PaymentDate   TIMESTAMP WITHOUT TIME ZONE,
     PaymentState  VARCHAR(50),
     PaymentAmount MONEY,
-    UserId        VARCHAR(50),
-    EventId       VARCHAR(50),
+    UserId        UUID,
+    EventId       UUID,
     FOREIGN KEY (UserId) REFERENCES Users (UserId),
     FOREIGN KEY (EventId) REFERENCES Events (EventId)
 );
