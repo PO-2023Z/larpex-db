@@ -66,8 +66,8 @@ CREATE TABLE UsersCredential
 (
     UserCredentialId UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     Password         VARCHAR(50),
-    UserId           UUID,
-    FOREIGN KEY (UserId) REFERENCES Users (UserId)
+    UserEmail           VARCHAR(50),
+    FOREIGN KEY (UserEmail) REFERENCES Users (Email)
 );
 CREATE TABLE Players
 (
@@ -99,8 +99,8 @@ CREATE TABLE Payments
     PaymentDate   TIMESTAMP WITHOUT TIME ZONE,
     PaymentState  VARCHAR(50),
     PaymentAmount MONEY,
-    UserId        UUID,
     EventId       UUID,
-    FOREIGN KEY (UserId) REFERENCES Users (UserId),
+    UserEmail           VARCHAR(50),
+    FOREIGN KEY (UserEmail) REFERENCES Users (Email)
     FOREIGN KEY (EventId) REFERENCES Events (EventId)
 );
