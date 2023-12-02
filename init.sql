@@ -45,7 +45,7 @@ CREATE TABLE Events
     DescriptionForClients   VARCHAR(1000),
     DescriptionForEmployees VARCHAR(1000),
     Icon                    VARCHAR(50),
-    EventState              VARCHAR(50) NOT NULL DEFAULT 'Created',
+    EventState              VARCHAR(50) NOT NULL DEFAULT 'Created' CHECK (EventState IN ('Created', 'InProgress', 'Paused', 'Ended')),
     EndDate                 TIMESTAMP WITHOUT TIME ZONE CHECK (EndDate > StartDate) NOT NULL,
     PaidFor                 BOOLEAN              DEFAULT FALSE,
     GameId                  UUID,
@@ -97,9 +97,9 @@ CREATE TABLE Equipments
 CREATE TABLE Payments
 (
     PaymentId     UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    PaymentType   VARCHAR(50) NOT NULL CHECK (PaymentType IN ('BLIK', 'SMS', 'PayPal')),
+    PaymentType   VARCHAR(50) NOT NULL CHECK (PaymentType IN ('BLIK', 'SMS', 'PayPal', 'Card', 'BankTransfer')),
     PaymentDate   TIMESTAMP WITHOUT TIME ZONE,
-    PaymentState  VARCHAR(50) NOT NULL CHECK (PaymentState IN ('Success', 'NotResolved', 'Failure')),
+    PaymentState  VARCHAR(50) NOT NULL CHECK (PaymentState IN ('Success', 'NotStarted', 'Failure')),
     PaymentAmount MONEY CHECK ( PaymentAmount > 0 ),
     EventId       UUID,
     UserEmail     VARCHAR(50) CHECK (UserEmail IS NOT NULL AND
