@@ -99,7 +99,7 @@ CREATE TABLE Payments
     PaymentId     UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     PaymentType   VARCHAR(50) NOT NULL CHECK (PaymentType IN ('BLIK', 'SMS', 'PayPal', 'Card', 'BankTransfer')),
     PaymentDate   TIMESTAMP WITHOUT TIME ZONE,
-    PaymentState  VARCHAR(50) NOT NULL CHECK (PaymentState IN ('Success', 'NotStarted', 'Failure')),
+    PaymentState  VARCHAR(50) NOT NULL CHECK (PaymentState IN ('Success', 'NotResolved', 'Failure')),
     PaymentAmount MONEY CHECK ( PaymentAmount > 0 ),
     EventId       UUID,
     UserEmail     VARCHAR(50) CHECK (UserEmail IS NOT NULL AND
