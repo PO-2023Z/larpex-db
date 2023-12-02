@@ -40,7 +40,7 @@ CREATE TABLE Events
     EventId                 UUID                 DEFAULT gen_random_uuid() PRIMARY KEY,
     EventName               VARCHAR(50) NOT NULL,
     StartDate               TIMESTAMP WITHOUT TIME ZONE NOT NULL CHECK (StartDate > NOW()),
-    PricePerUser            MONEY CHECK (PricePerUser => 0::money),
+    PricePerUser            MONEY CHECK (PricePerUser >= 0::money),
     TechnicalDescription    VARCHAR(1000),
     DescriptionForClients   VARCHAR(1000),
     DescriptionForEmployees VARCHAR(1000),
@@ -50,7 +50,7 @@ CREATE TABLE Events
     PaidFor                 BOOLEAN              DEFAULT FALSE,
     GameId                  UUID,
     PlaceId                 UUID,
-    EventPrice              MONEY CHECK (EventPrice => 0::money),
+    EventPrice              MONEY CHECK (EventPrice >= 0::money),
     OwnerEmail              VARCHAR(50) NOT NULL DEFAULT 'NoOwner@notExist.xyz',
     IsVisible               BOOLEAN              DEFAULT TRUE,
     IsExternalOrginiser     BOOLEAN              DEFAULT FALSE,
@@ -61,7 +61,7 @@ CREATE TABLE Users
 (
     UserId UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     Name   VARCHAR(50) NOT NULL,
-    Email  VARCHAR(50) CHECK (Email IS NOT NULL AND Email ~* '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'),
+    Email  VARCHAR(50) UNIQUE CHECK (Email IS NOT NULL AND Email ~* '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'),
     Avatar VARCHAR(150)
 );
 CREATE TABLE UsersCredential
