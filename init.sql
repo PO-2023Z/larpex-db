@@ -3,14 +3,14 @@ CREATE TABLE Places
     PlaceId      UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     Address      VARCHAR(250) NOT NULL,
     Details      VARCHAR(1000),
-    PricePerHour MONEY CHECK ( PricePerHour => 0 )
+    PricePerHour MONEY CHECK ( PricePerHour >= 0::money )
 );
 CREATE TABLE Games
 (
     GameId        UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     GameName      VARCHAR(50)                                      NOT NULL UNIQUE,
-    MaximumPlayer INT CHECK ( MaximumPlayer > 0 )                  NOT NULL Default 100,
-    Difficulty    INT CHECK ( Difficulty > 0 AND Difficulty <= 10) NOT NULL,
+    MaximumPlayer INT CHECK ( MaximumPlayer > 0::int )                  NOT NULL Default 100,
+    Difficulty    INT CHECK ( Difficulty > 0::int AND Difficulty <= 10::int) NOT NULL,
     Description   VARCHAR(1000),
     Map           VARCHAR(1000),
     Scenario      VARCHAR(1000)
@@ -40,7 +40,7 @@ CREATE TABLE Events
     EventId                 UUID                 DEFAULT gen_random_uuid() PRIMARY KEY,
     EventName               VARCHAR(50) NOT NULL,
     StartDate               TIMESTAMP WITHOUT TIME ZONE NOT NULL CHECK (StartDate > NOW()),
-    PricePerUser            MONEY CHECK (PricePerUser => 0 ),
+    PricePerUser            MONEY CHECK (PricePerUser >= 0::money),
     TechnicalDescription    VARCHAR(1000),
     DescriptionForClients   VARCHAR(1000),
     DescriptionForEmployees VARCHAR(1000),
@@ -50,7 +50,7 @@ CREATE TABLE Events
     PaidFor                 BOOLEAN              DEFAULT FALSE,
     GameId                  UUID,
     PlaceId                 UUID,
-    EventPrice              MONEY CHECK (EventPrice => 0),
+    EventPrice              MONEY CHECK (EventPrice >= 0::money),
     OwnerEmail              VARCHAR(50) NOT NULL DEFAULT 'NoOwner@notExist.xyz',
     IsVisible               BOOLEAN              DEFAULT TRUE,
     IsExternalOrginiser     BOOLEAN              DEFAULT FALSE,
@@ -61,7 +61,7 @@ CREATE TABLE Users
 (
     UserId UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     Name   VARCHAR(50) NOT NULL,
-    Email  VARCHAR(50) CHECK (Email IS NOT NULL AND Email ~* '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'),
+    Email  VARCHAR(50) UNIQUE CHECK (Email IS NOT NULL AND Email ~* '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'),
     Avatar VARCHAR(150)
 );
 CREATE TABLE UsersCredential
@@ -100,7 +100,7 @@ CREATE TABLE Payments
     PaymentType   VARCHAR(50) NOT NULL CHECK (PaymentType IN ('BLIK', 'SMS', 'PayPal', 'Card', 'BankTransfer')),
     PaymentDate   TIMESTAMP WITHOUT TIME ZONE,
     PaymentState  VARCHAR(50) NOT NULL CHECK (PaymentState IN ('Success', 'NotResolved', 'Failure')),
-    PaymentAmount MONEY CHECK ( PaymentAmount > 0 ),
+    PaymentAmount MONEY CHECK ( PaymentAmount > 0::money ),
     EventId       UUID,
     UserEmail     VARCHAR(50) CHECK (UserEmail IS NOT NULL AND
                                      UserEmail ~* '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'),
